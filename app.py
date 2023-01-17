@@ -23,10 +23,10 @@ else:
     print('No GPU available, using the CPU instead.')
     device = torch.device("cpu")
 
-consumer_key = st.secrets["consumer_key"]
-consumer_secret = st.secrets["consumer_secret"]
-access_token = st.secrets["access_token"]
-access_token_secret = st.secrets["access_token_secret"]
+consumer_key = st.session_state["consumer_key"] 
+consumer_secret = st.session_state["consumer_secret"]
+access_token = st.session_state["access_token"]
+access_token_secret = st.session_state["access_token_secret"]
 auth = tw.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tw.API(auth, wait_on_rate_limit=True)
