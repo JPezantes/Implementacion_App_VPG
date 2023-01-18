@@ -23,7 +23,7 @@ else:
     print('No GPU available, using the CPU instead.')
     device = torch.device("cpu")
 
-consumer_key = st.secrets["consumer_key"] 
+consumer_key = st.secrets["consumer_key"]
 consumer_secret = st.secrets["consumer_secret"]
 access_token = st.secrets["access_token"]
 access_token_secret = st.secrets["access_token_secret"]
@@ -114,7 +114,7 @@ def run():
                 tweets =tw.Cursor(api.search_tweets,q=new_search,lang="es",tweet_mode="extended").items(number_of_tweets)
 
             elif (filtro=='Usuario'):
-                tweets = api.user_timeline(screen_name = search_words,count=number_of_tweets)
+                tweets = api.user_timeline(screen_name = search_words,tweet_mode="extended",count=number_of_tweets)
             
             tweet_list = [i.full_text for i in tweets]
             
