@@ -167,4 +167,16 @@ def run():
         
         st.table(df.reset_index(drop=True).head(50).style.set_properties(subset=['violencia política de género'], **{'width': '250px'}).applymap(color_survived, subset=['violencia política de género']) )
                            
-run()
+try:
+    run()
+except KeyError:
+    cole,cole1,cole2 = st.columns([3,3,2])
+      
+    with cole1:
+        st.error('Termino no encontrado ⚠️', icon="⚠️")
+
+except tw.errors.NotFound:
+    coleu,coleu1,coleu2 = st.columns([3,3,2])
+      
+    with coleu1:
+        st.error('El usuario ingresados es incorrecto ⚠️', icon="⚠️")
