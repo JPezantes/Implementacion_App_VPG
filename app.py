@@ -164,8 +164,9 @@ def run():
             showTable = True
                 
     if (showTable):            
-        
-        st.table(df.reset_index(drop=True).head(50).style.set_properties(subset=['violencia política de género'], **{'width': '250px'}).applymap(color_survived, subset=['violencia política de género']) )
+        df.index+=1
+        print(df.index)
+        st.table(df.head(50).style.set_properties(subset=['violencia política de género'], **{'width': '250px'}).applymap(color_survived, subset=['violencia política de género']))
                            
 try:
     run()
