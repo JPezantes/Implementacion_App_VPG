@@ -114,7 +114,14 @@ def run():
                 tweets =tw.Cursor(api.search_tweets,q=new_search,lang="es",tweet_mode="extended").items(number_of_tweets)
 
             elif (filtro=='Usuario'):
-                tweets = api.user_timeline(screen_name = search_words,tweet_mode="extended",count=number_of_tweets)
+                try:
+                    if not search_words.startswith('@'):
+                        st.error("Por favor, ingrese un usuario válido, iniciando con @")
+                        return
+                    tweets = api.user_timeline(screen_name = search_words,tweet_mode="extended",count=number_of_tweets)
+                except tw.errors.NotFound:
+                    st.error('"El usuario ingresado no existe. Por favor, ingrese un usuario existente" ⚠️', icon="⚠️")
+                    return
             
             tweet_list = [i.full_text for i in tweets]
             
@@ -174,4 +181,4 @@ except KeyError:
     cole,cole1,cole2 = st.columns([3,3,2])
       
     with cole1:
-        st.error('Termino no encontrado ⚠️', icon="⚠️")
+        st.error('Término no encontrado. Por favor, ingrese un término existente ⚠️', icon="⚠️")
