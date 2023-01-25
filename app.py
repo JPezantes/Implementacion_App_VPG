@@ -178,7 +178,7 @@ def run():
 try:
     run()
 except KeyError:
-    cole,cole1,cole2 = st.columns([3,3,2])
+    cole,cole1,cole2 = st.columns([2,3,2])
       
     with cole1:
         st.error('Término no encontrado. Por favor, ingrese un término existente ⚠️', icon="⚠️")
