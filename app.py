@@ -88,7 +88,7 @@ with colT1:
 st.markdown(""" <style> .font2 {
     font-size:16px ; font-family: 'Times New Roman'; color: #181618;} 
     </style> """, unsafe_allow_html=True)
-st.markdown('<p class="font2">La presente app utiliza tweepy para descargar tweets de twitter en base a la información de entrada y procesa los tweets usando el modelo de lenguaje entrenado para identificar tweets que representan violencia política de género. Los tweets recolectados y su correspondiente clasificación se almacenan en un dataframe que se muestra como resultado final.</p>',unsafe_allow_html=True)
+st.markdown('<p class="font2">La presente herramienta utiliza tweepy para descargar tweets de twitter en base a la información de entrada y procesa los tweets usando el modelo de lenguaje entrenado para identificar tweets que representan violencia política de género. Los tweets recolectados y su correspondiente clasificación se almacenan en un dataframe que se muestra como resultado final.</p>',unsafe_allow_html=True)
 
 with open("style.css") as f: 
     st.markdown(f"<style>{f.read()}</style>",unsafe_allow_html=True)
@@ -100,16 +100,16 @@ def run():
       
     with col1:
         myform = st.form(key='Introduzca Texto')
-        search_words = myform.text_input("Introduzca el termino o usuario para analizar y pulse el check correspondiente")
+        search_words = myform.text_input("Introduzca el término o usuario para analizar y pulse el check correspondiente")
         number_of_tweets = myform.number_input('Introduzca número de tweets a analizar. Máximo 50', 0,50,10)
-        filtro=myform.radio("Seleccione la opcion para filtrar",('Termino', 'Usuario'))
+        filtro=myform.radio("Seleccione la opcion para filtrar por término o usuario",('Término', 'Usuario'))
 
                                
         submit_button = myform.form_submit_button(label='Analizar')
         
         if submit_button:
              
-            if (filtro=='Termino'):
+            if (filtro=='Término'):
                 new_search = search_words + " -filter:retweets"
                 tweets =tw.Cursor(api.search_tweets,q=new_search,lang="es",tweet_mode="extended").items(number_of_tweets)
 
@@ -175,9 +175,3 @@ except KeyError:
       
     with cole1:
         st.error('Termino no encontrado ⚠️', icon="⚠️")
-
-except tw.errors.NotFound:
-    coleu,coleu1,coleu2 = st.columns([3,3,2])
-      
-    with coleu1:
-        st.error('El usuario ingresados es incorrecto ⚠️', icon="⚠️")
