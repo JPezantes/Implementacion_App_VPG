@@ -120,7 +120,7 @@ def run():
                         return
                     tweets = api.user_timeline(screen_name = search_words,tweet_mode="extended",count=number_of_tweets)
                 except tw.errors.NotFound:
-                    st.error('"El usuario ingresado no existe. Por favor, ingrese un usuario existente" ⚠️', icon="⚠️")
+                    st.error('"El usuario ingresado no existe. Por favor, ingrese un usuario existente." ⚠️', icon="⚠️")
                     return
             
             tweet_list = [i.full_text for i in tweets]
@@ -181,4 +181,4 @@ except KeyError:
     cole,cole1,cole2 = st.columns([2,3,2])
       
     with cole1:
-        st.error('Término no encontrado. Por favor, ingrese un término existente ⚠️', icon="⚠️")
+        st.error('"Término no encontrado. Por favor, ingrese un término existente." ⚠️', icon="⚠️")
