@@ -122,7 +122,10 @@ def run():
                 except tw.errors.NotFound:
                     st.error('"El usuario ingresado no existe. Por favor, ingrese un usuario existente." ⚠️', icon="⚠️")
                     return
-            
+                except tw.errors.Unauthorized:
+                    st.error('El usuario ingresado es privado. Por favor, ingrese un usuario público ⚠️', icon="⚠️")
+                    return
+
             tweet_list = [i.full_text for i in tweets]
             
             text= pd.DataFrame(tweet_list)
@@ -181,4 +184,4 @@ except KeyError:
     cole,cole1,cole2 = st.columns([2,3,2])
       
     with cole1:
-        st.error('"Término no encontrado. Por favor, ingrese un término existente." ⚠️', icon="⚠️")
+        st.error('"No se encontraron tweets publicados con los datos ingresados." ⚠️', icon="⚠️")
