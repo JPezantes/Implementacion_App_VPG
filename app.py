@@ -78,7 +78,7 @@ with colT2:
     st.markdown('<p class="font">Violencia política de género en Twitter</p>', unsafe_allow_html=True)
     
     st.markdown(""" <style> .font1 {
-    font-size:28px ; font-family: 'Times New Roman'; color: #07B6F5; text-align: center;} 
+    font-size:30px ; font-family: 'Times New Roman'; color: #07B6F5; text-align: center;} 
     </style> """, unsafe_allow_html=True)
     st.markdown('<p class="font1">Modelo de lenguaje utilizando RoBERTuito, para identificar tweets con contenido de violencia política de género </p>', unsafe_allow_html=True)
     
@@ -86,7 +86,7 @@ with colT1:
     st.image("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP09HkQ52tAuccb8iFEWs9E4ag0xRVjDSYXHNHSdSIuzERFPxPZ6NQZYnd_WXB2j-kkoQ&usqp=CAU",width=200)
 
 st.markdown(""" <style> .font2 {
-    font-size:16px ; font-family: 'Times New Roman'; color: #181618;} 
+    font-size:18px ; font-family: 'Times New Roman'; color: #181618;} 
     </style> """, unsafe_allow_html=True)
 st.markdown('<p class="font2">La presente herramienta permite ingresar un término o un usuario de twitter para ser analizado. Ademas, permite ingresar un número de tweets para analizar, máximo 50. Seleccione la opción de filtrar por término para analizar lo que publican hacia el término ingresado, el término puede ser su usuario de twitter o sus nombres y apellidos. Seleccione la opción de filtrar por usuario para analizar los tweets publicados por el usuario ingresado. Al dar click en Analizar se presentan los resultados de los datos ingresados en una tabla con su respectiva clasificación.</p>',unsafe_allow_html=True)
 
