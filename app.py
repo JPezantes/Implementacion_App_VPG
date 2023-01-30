@@ -73,7 +73,7 @@ colT1,colT2 = st.columns([2,8])
 with colT2:
     #st.title('Analisis de contenido de violencia política de género en Twitter') 
     st.markdown(""" <style> .font {
-    font-size:40px ; font-family: 'Cooper Black'; color: #F15A28; text-aling: center;} 
+    font-size:40px ; font-family: 'Cooper Black'; color: #F15A28; text-align: center;} 
     </style> """, unsafe_allow_html=True)
     st.markdown('<p class="font">Violencia política de género en Twitter</p>', unsafe_allow_html=True)
     
