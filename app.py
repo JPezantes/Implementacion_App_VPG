@@ -88,7 +88,7 @@ with colT1:
 st.markdown(""" <style> .font2 {
     font-size:16px ; font-family: 'Times New Roman'; color: #181618;} 
     </style> """, unsafe_allow_html=True)
-st.markdown('<p class="font2">La presente herramienta utiliza tweepy para descargar tweets de twitter en base a la información de entrada y procesa los tweets usando el modelo de lenguaje entrenado para identificar tweets que representan violencia política de género. Los tweets recolectados y su correspondiente clasificación se almacenan en un dataframe que se muestra como resultado final.</p>',unsafe_allow_html=True)
+st.markdown('<p class="font2">La presente herramienta permite ingresar un termino o un usuario de twitter para ser analizado. Ademas, debe ingresar un número de tweets para analizar, máximo 50. Seleccione la opción de filtrar por término para analizar lo que publican hacia el término ingresado, el término puede ser su usuario de twitter o sus nombres y apellidos. Seleccione la opción de filtrar por usuario para analizar los tweets publicados por el usuario ingresado. Al dar click en Analizar se presentan los resultados de los datos ingresados en una tabla con su respectiva clasificación.</p>',unsafe_allow_html=True)
 
 with open("style.css") as f: 
     st.markdown(f"<style>{f.read()}</style>",unsafe_allow_html=True)
