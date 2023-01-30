@@ -69,7 +69,7 @@ st.markdown('<style>body{background-color: Blue;}</style>',unsafe_allow_html=Tru
 
 #background-color: Blue;
 
-colT1,colT2 = st.columns([2,8])
+colT1,colT2 = st.columns([2,9])
 with colT2:
     #st.title('Analisis de contenido de violencia política de género en Twitter') 
     st.markdown(""" <style> .font {
