@@ -73,12 +73,12 @@ colT1,colT2 = st.columns([2,8])
 with colT2:
     #st.title('Analisis de contenido de violencia política de género en Twitter') 
     st.markdown(""" <style> .font {
-    font-size:40px ; font-family: 'Cooper Black'; color: #F15A28;} 
+    font-size:40px ; font-family: 'Cooper Black'; color: #F15A28; text-aling: center;} 
     </style> """, unsafe_allow_html=True)
     st.markdown('<p class="font">Violencia política de género en Twitter</p>', unsafe_allow_html=True)
     
     st.markdown(""" <style> .font1 {
-    font-size:28px ; font-family: 'Times New Roman'; color: #07B6F5;} 
+    font-size:28px ; font-family: 'Times New Roman'; color: #07B6F5; text-align: center;} 
     </style> """, unsafe_allow_html=True)
     st.markdown('<p class="font1">Modelo de lenguaje utilizando RoBERTuito, para identificar tweets con contenido de violencia política de género </p>', unsafe_allow_html=True)
     
@@ -88,7 +88,7 @@ with colT1:
 st.markdown(""" <style> .font2 {
     font-size:16px ; font-family: 'Times New Roman'; color: #181618;} 
     </style> """, unsafe_allow_html=True)
-st.markdown('<p class="font2">La presente herramienta permite ingresar un termino o un usuario de twitter para ser analizado. Ademas, debe ingresar un número de tweets para analizar, máximo 50. Seleccione la opción de filtrar por término para analizar lo que publican hacia el término ingresado, el término puede ser su usuario de twitter o sus nombres y apellidos. Seleccione la opción de filtrar por usuario para analizar los tweets publicados por el usuario ingresado. Al dar click en Analizar se presentan los resultados de los datos ingresados en una tabla con su respectiva clasificación.</p>',unsafe_allow_html=True)
+st.markdown('<p class="font2">La presente herramienta permite ingresar un término o un usuario de twitter para ser analizado. Ademas, permite ingresar un número de tweets para analizar, máximo 50. Seleccione la opción de filtrar por término para analizar lo que publican hacia el término ingresado, el término puede ser su usuario de twitter o sus nombres y apellidos. Seleccione la opción de filtrar por usuario para analizar los tweets publicados por el usuario ingresado. Al dar click en Analizar se presentan los resultados de los datos ingresados en una tabla con su respectiva clasificación.</p>',unsafe_allow_html=True)
 
 with open("style.css") as f: 
     st.markdown(f"<style>{f.read()}</style>",unsafe_allow_html=True)
