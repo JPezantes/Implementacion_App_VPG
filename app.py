@@ -108,28 +108,33 @@ def run():
         submit_button = myform.form_submit_button(label='Analizar')
         
         if submit_button:
-
-            if number_of_tweets <= 0:
-                st.error("Por favor, ingrese un número de tweets mayor a 0.")
-                return
              
             if (filtro=='Término'):
 
                 if not search_words:
                     st.error("Campo vacío. Por favor, ingrese un término o usuario.")
                     return
+                if number_of_tweets <= 0:
+                    st.error("Por favor, ingrese un número de tweets mayor a 0.")
+                    return
                 new_search = search_words + " -filter:retweets"
                 tweets =tw.Cursor(api.search_tweets,q=new_search,lang="es",tweet_mode="extended").items(number_of_tweets)
 
             elif (filtro=='Usuario'):
 
-                if not search_words.startswith('@'):
-                        st.error("Por favor, ingrese un usuario válido, iniciando con @")
-                        return
                 try:
                     if not search_words:
                         st.error("Campo vacío. Por favor, ingrese un usuario.")
-                        return                   
+                        return
+
+                    if not search_words.startswith('@'):
+                        st.error("Por favor, ingrese un usuario válido, iniciando con @")
+                        return
+
+                    if number_of_tweets <= 0:
+                        st.error("Por favor, ingrese un número de tweets mayor a 0.")
+                        return  
+                                         
                     tweets = api.user_timeline(screen_name = search_words,tweet_mode="extended",count=number_of_tweets)
 
                 except tw.errors.NotFound:
