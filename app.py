@@ -88,7 +88,7 @@ with colT1:
 st.markdown(""" <style> .font2 {
     font-size:18px ; font-family: 'Times New Roman'; color: #181618; text-align: justify;} 
     </style> """, unsafe_allow_html=True)
-st.markdown('<p class="font2">La presente herramienta permite ingresar un término o un usuario de twitter para ser analizado. Ademas, permite ingresar un número de tweets para analizar, máximo 50. Si desea analizar lo que publican hacia su usuario de twitter o hacia sus nombres y apellidos seleccione la opción de filtrar por término. Seleccione la opción de filtrar por usuario para analizar los tweets publicados por un usuario en específico. Al dar click en Analizar se presentan los resultados de los datos ingresados en una tabla con su respectiva clasificación.</p>',unsafe_allow_html=True)
+st.markdown('<p class="font2">La presente herramienta permite ingresar un término o un usuario de twitter para ser analizado. Ademas, permite ingresar un número de tweets para analizar, máximo 50. Si desea analizar lo que publican hacia su usuario de twitter o sus nombres y apellidos seleccione la opción de filtrar por término. Seleccione la opción de filtrar por usuario para analizar los tweets publicados por parte de un usuario de twitter en específico. Al dar click en Analizar se presentan los resultados de los datos ingresados en una tabla con su respectiva clasificación.</p>',unsafe_allow_html=True)
 
 with open("style.css") as f: 
     st.markdown(f"<style>{f.read()}</style>",unsafe_allow_html=True)
@@ -108,99 +108,94 @@ def run():
         submit_button = myform.form_submit_button(label='Analizar')
         
         if submit_button:
-             
-            if (filtro=='Término'):
+
+            with st.spinner('Analizando tweets...'):
 
                 if not search_words:
-                    st.error("Campo vacío. Por favor, ingrese un término o usuario.")
-                    return
+                        st.error("Campo vacío. Por favor, ingrese un término o usuario.")
+                        return
                 if number_of_tweets <= 0:
-                    st.error("Por favor, ingrese un número de tweets mayor a 0.")
-                    return
-                new_search = search_words + " -filter:retweets"
-                tweets =tw.Cursor(api.search_tweets,q=new_search,lang="es",tweet_mode="extended").items(number_of_tweets)
-
-            elif (filtro=='Usuario'):
-
-                try:
-                    if not search_words:
-                        st.error("Campo vacío. Por favor, ingrese un usuario.")
-                        return
-
-                    if not search_words.startswith('@'):
-                        st.error("Por favor, ingrese un usuario válido, iniciando con @")
-                        return
-
-                    if number_of_tweets <= 0:
                         st.error("Por favor, ingrese un número de tweets mayor a 0.")
-                        return  
-                                         
-                    tweets = api.user_timeline(screen_name = search_words,tweet_mode="extended",count=number_of_tweets)
+                        return
+                
 
-                except tw.errors.NotFound:
-                    st.error('"El usuario ingresado no existe. Por favor, ingrese un usuario existente." ⚠️', icon="⚠️")
+                if (filtro=='Término'):
+
+                    new_search = search_words + " -filter:retweets"
+                    tweets =tw.Cursor(api.search_tweets,q=new_search,lang="es",tweet_mode="extended").items(number_of_tweets)
+
+                elif (filtro=='Usuario'):
+
+                    try:
+
+                        if not search_words.startswith('@'):
+                            st.error("Por favor, ingrese un usuario válido, iniciando con @")
+                            return  
+                                            
+                        tweets = api.user_timeline(screen_name = search_words,tweet_mode="extended",count=number_of_tweets)
+
+                    except tw.errors.NotFound:
+                        st.error('"El usuario ingresado no existe. Por favor, ingrese un usuario existente." ⚠️', icon="⚠️")
+                        return
+
+                    except tw.errors.Unauthorized:
+                        st.error('El usuario ingresado es privado. Por favor, ingrese un usuario público ⚠️', icon="⚠️")
+                        return
+
+                tweet_list = [i.full_text for i in tweets]
+
+                if not tweet_list:
+                    st.error("No se encontraron tweets con los criterios de búsqueda especificados.")
                     return
 
-                except tw.errors.Unauthorized:
-                    st.error('El usuario ingresado es privado. Por favor, ingrese un usuario público ⚠️', icon="⚠️")
-                    return
-
-            tweet_list = [i.full_text for i in tweets]
-            
-            text= pd.DataFrame(tweet_list)
-            #text[0] = text[0].apply(preprocess)
-            text[0] = text[0].apply(preprocess_tweet)
-            text1=text[0].values
-            indices1=tokenizer.batch_encode_plus(text1.tolist(),
-                                     max_length=128,
-                                     add_special_tokens=True, 
-                                     return_attention_mask=True,
-                                     pad_to_max_length=True,
-                                     truncation=True)
-            input_ids1=indices1["input_ids"]
-            attention_masks1=indices1["attention_mask"]
-            prediction_inputs1= torch.tensor(input_ids1)
-            prediction_masks1 = torch.tensor(attention_masks1)
-            # Set the batch size.  
-            batch_size = 25
-            # Create the DataLoader.
-            prediction_data1 = TensorDataset(prediction_inputs1, prediction_masks1)
-            prediction_sampler1 = SequentialSampler(prediction_data1)
-            prediction_dataloader1 = DataLoader(prediction_data1, sampler=prediction_sampler1, batch_size=batch_size)
-            print('Predicting labels for {:,} test sentences...'.format(len(prediction_inputs1)))
-            # Put model in evaluation mode
-            model.eval()
-            # Tracking variables 
-            predictions = []
-            # Predict 
-            for batch in prediction_dataloader1:
-                batch = tuple(t.to(device) for t in batch)
-                # Unpack the inputs from our dataloader
-                b_input_ids1, b_input_mask1 = batch
-                # Telling the model not to compute or store gradients, saving memory and   # speeding up prediction
-                with torch.no_grad():
-                    # Forward pass, calculate logit predictions
-                    outputs1 = model(b_input_ids1, token_type_ids=None,attention_mask=b_input_mask1)
-                logits1 = outputs1[0]
-                # Move logits and labels to CPU
-                logits1 = logits1.detach().cpu().numpy()
-                # Store predictions and true labels
-                predictions.append(logits1)
-            flat_predictions = [item for sublist in predictions for item in sublist]
-            flat_predictions = np.argmax(flat_predictions, axis=1).flatten()
-            df = pd.DataFrame(list(zip(tweet_list, flat_predictions)),columns =['Últimos '+ str(number_of_tweets)+' Tweets'+' de '+search_words, 'violencia política de género'])
-            df['violencia política de género']= np.where(df['violencia política de género']== 0, 'no violencia política de género', 'violencia política de género')
-            showTable = True
+                text= pd.DataFrame(tweet_list)
+                text[0] = text[0].apply(preprocess_tweet)
+                text1=text[0].values
+                indices1=tokenizer.batch_encode_plus(text1.tolist(),
+                                        max_length=128,
+                                        add_special_tokens=True, 
+                                        return_attention_mask=True,
+                                        pad_to_max_length=True,
+                                        truncation=True)
+                input_ids1=indices1["input_ids"]
+                attention_masks1=indices1["attention_mask"]
+                prediction_inputs1= torch.tensor(input_ids1)
+                prediction_masks1 = torch.tensor(attention_masks1)
+                # Set the batch size.  
+                batch_size = 25
+                # Create the DataLoader.
+                prediction_data1 = TensorDataset(prediction_inputs1, prediction_masks1)
+                prediction_sampler1 = SequentialSampler(prediction_data1)
+                prediction_dataloader1 = DataLoader(prediction_data1, sampler=prediction_sampler1, batch_size=batch_size)
+                print('Predicting labels for {:,} test sentences...'.format(len(prediction_inputs1)))
+                # Put model in evaluation mode
+                model.eval()
+                # Tracking variables 
+                predictions = []
+                # Predict 
+                for batch in prediction_dataloader1:
+                    batch = tuple(t.to(device) for t in batch)
+                    # Unpack the inputs from our dataloader
+                    b_input_ids1, b_input_mask1 = batch
+                    # Telling the model not to compute or store gradients, saving memory and   # speeding up prediction
+                    with torch.no_grad():
+                        # Forward pass, calculate logit predictions
+                        outputs1 = model(b_input_ids1, token_type_ids=None,attention_mask=b_input_mask1)
+                    logits1 = outputs1[0]
+                    # Move logits and labels to CPU
+                    logits1 = logits1.detach().cpu().numpy()
+                    # Store predictions and true labels
+                    predictions.append(logits1)
+                flat_predictions = [item for sublist in predictions for item in sublist]
+                flat_predictions = np.argmax(flat_predictions, axis=1).flatten()
+                df = pd.DataFrame(list(zip(tweet_list, flat_predictions)),columns =['Últimos '+ str(number_of_tweets)+' Tweets'+' de '+search_words, 'violencia política de género'])
+                df['violencia política de género']= np.where(df['violencia política de género']== 0, 'no violencia política de género', 'violencia política de género')
+                showTable = True
+            st.success('Análisis completado!', icon="✅")
                 
     if (showTable):            
         df.index+=1
         print(df.index)
         st.table(df.head(50).style.set_properties(subset=['violencia política de género'], **{'width': '250px'}).applymap(color_survived, subset=['violencia política de género']))
                            
-try:
-    run()
-except KeyError:
-    cole,cole1,cole2 = st.columns([2,3,2])
-      
-    with cole1:
-        st.error('"No se encontraron tweets publicados con los datos ingresados." ⚠️', icon="⚠️")
+run()
