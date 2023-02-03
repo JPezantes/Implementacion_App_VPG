@@ -101,7 +101,7 @@ def run():
     with col1:
         myform = st.form(key='Introduzca Texto')
         search_words = myform.text_input("Introduzca el término o usuario para analizar.")
-        number_of_tweets = myform.number_input('Introduzca número de tweets a analizar, máximo 50.', 0,50,10)
+        number_of_tweets = myform.number_input('Introduzca número de tweets a analizar, máximo 50.', 0,50)
         filtro=myform.radio("Seleccione la opción para filtrar por término o usuario.",('Término', 'Usuario'))
 
                                
