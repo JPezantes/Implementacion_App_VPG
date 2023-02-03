@@ -145,8 +145,11 @@ def run():
                 tweet_list = [i.full_text for i in tweets]
 
                 if not tweet_list:
-                    st.error("No se encontraron tweets con los criterios de búsqueda especificados.")
+                    msg = "No se encontraron tweets publicados por el "+filtro+" ingresado."
+                    msg2= "No se encontraron tweets publicados para el "+filtro+" ingresado."
+                    st.error(msg if filtro=='Usuario' else msg2)
                     return
+                    
 
                 text= pd.DataFrame(tweet_list)
                 text[0] = text[0].apply(preprocess_tweet)
