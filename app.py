@@ -88,7 +88,7 @@ with colT1:
 st.markdown(""" <style> .font2 {
     font-size:18px ; font-family: 'Times New Roman'; color: #181618; text-align: justify;} 
     </style> """, unsafe_allow_html=True)
-st.markdown('<p class="font2">La presente herramienta permite ingresar un término o un usuario de twitter para ser analizado. Ademas, permite ingresar un número de tweets para analizar, máximo 50. Si desea analizar lo que publican hacia su usuario de twitter o sus nombres y apellidos seleccione la opción de filtrar por término. Seleccione la opción de filtrar por usuario para analizar los tweets publicados por parte de un usuario de twitter en específico. Al dar click en Analizar se presentan los resultados de los datos ingresados en una tabla con su respectiva clasificación.</p>',unsafe_allow_html=True)
+st.markdown('<p class="font2">La presente herramienta permite ingresar un término o un usuario de twitter para ser analizado. Además, permite ingresar un número de tweets para analizar, máximo 50. Si desea analizar lo que publican hacia su usuario de twitter o sus nombres y apellidos seleccione la opción de filtrar por término. Seleccione la opción de filtrar por usuario para analizar los tweets publicados por parte de un usuario de twitter en específico. Al dar click en Analizar se presentan los resultados de los datos ingresados en una tabla con su respectiva clasificación.</p>',unsafe_allow_html=True)
 
 with open("style.css") as f: 
     st.markdown(f"<style>{f.read()}</style>",unsafe_allow_html=True)
